@@ -1,0 +1,11 @@
+# Root App values
+# Override these per-cluster at bootstrap time (see clusters/*/root-app-values.yaml)
+
+repoURL: https://github.com/dani54196/platform-software-of-south # replace with your repo URL
+targetRevision: main
+
+# Cluster-specific — set to "preprod" or "prod"
+environment: prod
+
+destination:
+  server: https://kubernetes.default.svc

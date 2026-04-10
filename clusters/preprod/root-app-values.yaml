@@ -1,0 +1,9 @@
+# Root App overrides — preprod cluster
+# Apply with: helm install root-app ./bootstrap/root-app -n argocd -f clusters/preprod/root-app-values.yaml
+
+repoURL: https://github.com/dani54196/platform-software-of-south # replace
+targetRevision: main
+environment: preprod
+
+destination:
+  server: https://kubernetes.default.svc

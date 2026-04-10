@@ -1,0 +1,65 @@
+# ArgoCD Helm values — prod cluster
+# Access: https://argocd.softwareofsouth.website
+# TLS via cert-manager + Traefik IngressRoute
+
+configs:
+  params:
+    # argocd-server runs insecure; Traefik terminates TLS
+    server.insecure: true
+
+server:
+  service:
+    type: ClusterIP  # Traefik routes to this service
+
+  ingress:
+    enabled: false  # We use Traefik IngressRoute instead (see traefik-ingressroute.yaml)
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+
+repoServer:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+applicationSet:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 200m
+      memory: 128Mi
+
+controller:
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 2000m
+      memory: 1Gi
+
+redis:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+
+notifications:
+  enabled: false  # Enable and configure once base setup is stable
+
+dex:
+  enabled: false  # Enable for SSO (GitHub OAuth) when ready
