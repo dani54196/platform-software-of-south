@@ -1,0 +1,68 @@
+# Monitoring stack — prod overrides
+# Replace grafana.yourdomain.com with your actual domain
+
+kube-prometheus-stack:
+
+  grafana:
+    adminPassword: "CHANGE_THIS_USE_SEALED_SECRET"  # use sealed-secrets in prod
+
+    ingress:
+      enabled: false   # using Traefik IngressRoute instead (see traefik-ingressroute.yaml)
+
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+
+  prometheus:
+    prometheusSpec:
+      retention: 15d
+      retentionSize: "18GB"
+      resources:
+        requests:
+          cpu: 500m
+          memory: 1Gi
+        limits:
+          cpu: 2000m
+          memory: 2Gi
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            resources:
+              requests:
+                storage: 20Gi
+
+  alertmanager:
+    enabled: true
+    alertmanagerSpec:
+      resources:
+        requests:
+          cpu: 50m
+          memory: 64Mi
+        limits:
+          cpu: 200m
+          memory: 128Mi
+
+loki:
+  singleBinary:
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    persistence:
+      size: 10Gi
+
+promtail:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi

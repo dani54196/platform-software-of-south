@@ -1,0 +1,18 @@
+apiVersion: v2
+name: monitoring
+description: Monitoring stack — Prometheus, Grafana, Alertmanager, Loki, Promtail
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: kube-prometheus-stack
+    version: "83.4.0"   # pin to latest stable: helm search repo prometheus-community/kube-prometheus-stack
+    repository: https://prometheus-community.github.io/helm-charts
+
+  - name: loki
+    version: "6.55.0"    # helm search repo grafana/loki
+    repository: https://grafana.github.io/helm-charts
+
+  - name: promtail
+    version: "6.17.1"    # helm search repo grafana/promtail
+    repository: https://grafana.github.io/helm-charts

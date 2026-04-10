@@ -1,0 +1,76 @@
+# Monitoring stack — preprod overrides
+# VMs: 2x (4 CPU / 8 GB RAM) — resources kept lean
+
+kube-prometheus-stack:
+
+  grafana:
+    adminPassword: "preprod-changeme"   # change this, low stakes env but still
+    ingress:
+      enabled: false   # access via port-forward in preprod (see runbook)
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 300m
+        memory: 256Mi
+
+  prometheus:
+    prometheusSpec:
+      retention: 7d           # shorter retention in preprod
+      retentionSize: "8GB"
+      resources:
+        requests:
+          cpu: 200m
+          memory: 512Mi
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+      storageSpec:
+        volumeClaimTemplate:
+          spec:
+            resources:
+              requests:
+                storage: 10Gi  # smaller in preprod
+
+  alertmanager:
+    enabled: false   # not needed in preprod
+
+  nodeExporter:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 32Mi
+      limits:
+        cpu: 100m
+        memory: 64Mi
+
+  kubeStateMetrics:
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 100m
+        memory: 128Mi
+
+loki:
+  singleBinary:
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 300m
+        memory: 256Mi
+    persistence:
+      size: 5Gi   # smaller in preprod
+
+promtail:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
